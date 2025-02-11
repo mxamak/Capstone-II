@@ -1,0 +1,61 @@
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-10 mx-auto">
+      <h1 class="text-3xl font-medium title-font text-gray-900 mb-4 text-center">
+        Create a Research Project
+      </h1>
+      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        
+        <!-- Research Title -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            Research Title:
+          </label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+            type="text" placeholder="Enter research title">
+        </div>
+  
+        <!-- Research Description -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            Description:
+          </label>
+          <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+            placeholder="Enter research description"></textarea>
+        </div>
+  
+        <!-- Researcher Names -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            Researcher(s) Name(s):
+          </label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+            type="text" placeholder="Enter researcher names (comma-separated)">
+        </div>
+  
+        <!-- Target Audience -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            Target Audience:
+          </label>
+          <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+            <option value="">Select target audience</option>
+            <option value="students">Students</option>
+            <option value="faculty">Faculty</option>
+            <option value="general-public">General Public</option>
+            <option value="professionals">Professionals</option>
+          </select>
+        </div>
+  
+        <!-- Submit Button -->
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Submit
+        </button>
+  
+        <!-- Back to Home Button -->
+        <button routerLink="/" class="ml-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+          Back to Home
+        </button>
+  
+      </form>
+    </div>
+  </section>
