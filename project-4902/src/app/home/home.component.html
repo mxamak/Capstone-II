@@ -20,7 +20,8 @@
               </div>
               <h2 class="title-font text-2xl font-medium text-gray-900 mt-6 mb-3">For Researchers</h2>
               <p class="leading-relaxed text-base">Share your projects, gather real-world feedback, and refine your tools with engaged participants.</p>
-              <button routerLink="/login" class="flex mx-auto mt-6 text-white bg-green-900 border-0 py-2 px-5 focus:outline-none hover:bg-green-600 rounded">Get Started</button>
+              <button routerLink="/research-creation" class="flex mx-auto mt-6 text-white bg-green-900 border-0 py-2 px-5 focus:outline-none hover:bg-green-600 rounded">Get Started</button>
+              <!-- <button routerLink="/login" class="flex mx-auto mt-6 text-white bg-green-900 border-0 py-2 px-5 focus:outline-none hover:bg-green-600 rounded">Get Started</button> -->
             </div>
             <div class="sm:w-1/2 mb-10 px-4">
               <div class="rounded-lg h-64 overflow-hidden">
@@ -40,40 +41,44 @@
         <div class="xl:w-1/4 lg:w-1/2 md:w-full px-8 py-6 border-l-2 border-gray-200 border-opacity-60">
           <h2 class="text-lg sm:text-xl text-gray-900 font-medium title-font mb-2">How It Works</h2>
           <p class="leading-relaxed text-base mb-4">Learn how to participate or publish research in just a few simple steps. Click to get started! 🚀</p>
-          <a class="text-green-500 inline-flex items-center">Learn More
+          <a [routerLink]="'/how-it-works'" class="text-green-500 inline-flex items-center cursor-pointer">
+            Learn More
             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
-              <path d="M5 12h14M12 5l7 7-7 7"></path>
+                <path d="M5 12h14M12 5l7 7-7 7"></path>
             </svg>
-          </a>
+        </a>
         </div>
         <div class="xl:w-1/4 lg:w-1/2 md:w-full px-8 py-6 border-l-2 border-gray-200 border-opacity-60">
           <h2 class="text-lg sm:text-xl text-gray-900 font-medium title-font mb-2">Our Mission </h2>
           <p class="leading-relaxed text-base mb-4">At Research Finder, we bridge the gap between researchers and participants, enabling innovation through real-world testing and feedback. Join us in advancing research and discovery!</p>
-          <a class="text-green-500 inline-flex items-center">Learn More
+          <a [routerLink]="'/our-mission'" class="text-green-500 inline-flex items-center cursor-pointer">
+            Learn More
             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
-              <path d="M5 12h14M12 5l7 7-7 7"></path>
+                <path d="M5 12h14M12 5l7 7-7 7"></path>
             </svg>
-          </a>
+        </a>
         </div>
       
       <div class="xl:w-1/4 lg:w-1/2 md:w-full px-8 py-6 border-l-2 border-gray-200 border-opacity-60">
         <h2 class="text-lg sm:text-xl text-gray-900 font-medium title-font mb-2">About Us: </h2>
         <p class="leading-relaxed text-base mb-4">Learn more about Research Finder—our mission, vision, and how we connect researchers with participants to drive innovation and discovery.</p>
-        <a class="text-green-500 inline-flex items-center">Learn More
+        <a [routerLink]="'/about-us'" class="text-green-500 inline-flex items-center cursor-pointer">
+          Learn More
           <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
-            <path d="M5 12h14M12 5l7 7-7 7"></path>
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
           </svg>
-        </a>
+      </a>
       </div>
       <div class="xl:w-1/4 lg:w-1/2 md:w-full px-8 py-6 border-l-2 border-gray-200 border-opacity-60">
         <h2 class="text-lg sm:text-xl text-gray-900 font-medium title-font mb-2">Contact Us</h2>
         <p class="leading-relaxed text-base mb-4">Have questions or need support? We're here to help! Reach out to us for inquiries, assistance, or collaboration opportunities.
         </p>
-        <a class="text-green-500 inline-flex items-center">Learn More
+        <a [routerLink]="'/contact-us'" class="text-green-500 inline-flex items-center cursor-pointer">
+          Learn More
           <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
-            <path d="M5 12h14M12 5l7 7-7 7"></path>
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
           </svg>
-        </a>
+      </a>
       </div>
     </div><br><br>
   </section>
