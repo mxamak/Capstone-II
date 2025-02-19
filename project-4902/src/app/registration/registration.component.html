@@ -10,22 +10,24 @@
         <div class="space-y-6">
           <div>
             <label class="text-gray-800 text-sm mb-2 block">Email Id</label>
-            <input name="email" type="text" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter email" />
+            <input type="email" [(ngModel)]="email" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter email" />
           </div>
           <div>
             <label class="text-gray-800 text-sm mb-2 block">Password</label>
-            <input name="password" type="password" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter password" />
+            <input type="password" [(ngModel)]="password" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter password" />
           </div>
           <div>
             <label class="text-gray-800 text-sm mb-2 block">Confirm Password</label>
-            <input name="cpassword" type="password" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter confirm password" />
+            <input type="password" [(ngModel)]="password" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter confirm password" />
           </div>
 
-          
+          <div id="recaptcha-container"></div>
+
+
         </div>
 
         <div class="!mt-8">
-          <button type="button" class="w-full py-3 px-4 text-sm tracking-wider font-semibold rounded-md text-white bg-green-900 hover:bg-green-700 focus:outline-none">
+          <button (click)="register()" type="button" class="w-full py-3 px-4 text-sm tracking-wider font-semibold rounded-md text-white bg-green-900 hover:bg-green-700 focus:outline-none">
             Create an account
           </button>
         </div>
