@@ -2,10 +2,6 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 
-<<<<<<< Updated upstream
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
-=======
 import { provideFirebaseApp, initializeApp, getApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
@@ -34,8 +30,8 @@ bootstrapApplication(AppComponent, {
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    importProvidersFrom(FormsModule)// ✅ Ensure FormsModule is included
+    importProvidersFrom(FormsModule)
   ]
   
 }).catch((err) => console.error(err));
->>>>>>> Stashed changes
+
