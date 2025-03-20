@@ -1,12 +1,27 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../auth.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink],
+  standalone: true,
+  imports: [RouterLink, CommonModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  email: string = '';
+  password: string = '';
+  errorMessage: string = '';
 
+  constructor(private authService: AuthService, private router: Router) {}
+
+  loginUser() {
+    this.authService.login(this.email, this.password).subscribe({
+      next: () => this.router.navigate(['/research-creation']), // Change this to your main page
+      error: (err) => this.errorMessage = 'Invalid email or password!'
+    });
+  }
 }
