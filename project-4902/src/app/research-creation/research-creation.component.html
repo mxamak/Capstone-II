@@ -1,10 +1,9 @@
 <section class="text-gray-600 body-font">
   <div class="container px-5 py-10 mx-auto">
     <h1 class="text-3xl font-medium title-font text-gray-900 mb-4 text-center">
-      Create a Research Project
+      Create or Edit a Research Project
     </h1>
 
-    <!-- Bind the form using Angular Reactive Forms -->
     <form [formGroup]="researchForm" (ngSubmit)="onSubmit($event)" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       
       <!-- Research Title -->
@@ -39,11 +38,42 @@
         </select>
       </div>
 
-      <!-- Submit Button -->
-      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Submit
-      </button>
+      <!-- Tool Link -->
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Tool Link:</label>
+        <input formControlName="toolLink" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
+          type="url" placeholder="Enter the link to the tool (e.g., https://example.com)">
+      </div>
 
+      <!-- Submit Button -->
+      <button type="submit" class="bg-green-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        {{ selectedResearchId ? 'Update' : 'Submit' }}
+      </button>
+      
+      <!-- Cancel Edit Button -->
+      <button type="button" *ngIf="selectedResearchId" (click)="selectedResearchId = null; researchForm.reset();"
+        class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded ml-2">
+        Cancel
+      </button>
     </form>
+
+    <h2 class="text-2xl font-medium title-font text-gray-900 mb-4 text-center">Existing Research Projects</h2>
+
+    <div *ngFor="let research of researchProjects$ | async" class="bg-gray-100 p-4 rounded mb-4 shadow">
+      <h3 class="text-xl font-bold">{{ research.title }}</h3>
+      <p><strong>Description:</strong> {{ research.description }}</p>
+      <p><strong>Researchers:</strong> {{ research.researchers }}</p>
+      <p><strong>Target Audience:</strong> {{ research.targetAudience }}</p>
+      <p><strong>Tool Link:</strong> <a [href]="research.toolLink" target="_blank" class="text-blue-600 underline">{{ research.toolLink }}</a></p>
+
+      <button (click)="editResearch(research, $event)" class="bg-green-800 hover:bg-green-600 text-white font-bold py-1 px-3 rounded mr-2">
+        Edit
+      </button>
+      
+
+      <button (click)="deleteResearch(research.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
+        Delete
+      </button>
+    </div>
   </div>
 </section>

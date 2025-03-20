@@ -1,0 +1,15 @@
+.dialog-container {
+    border-radius: 1px;
+    padding: 16px;
+  }
+  
+  .green-button {
+    background-color: rgb(128, 0, 0) !important; 
+    color: white !important;
+    font-weight: bold;
+  }
+  
+  .green-button:hover {
+    background-color: red !important; 
+  }
+  
