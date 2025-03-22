@@ -1,0 +1,35 @@
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-10 mx-auto">
+      <h1 class="text-3xl font-medium title-font text-gray-900 mb-4 text-center">
+        Available Research Projects
+      </h1>
+  
+      <div *ngIf="researchProjects$ | async as researchProjects; else loading">
+        <div *ngIf="researchProjects.length > 0; else noProjects">
+          <div *ngFor="let project of researchProjects" class="bg-white p-4 rounded shadow-md mb-4">
+            <h2 class="text-xl font-bold">{{ project.title }}</h2>
+            <p><strong>Description:</strong> {{ project.description }}</p>
+            <p><strong>Researchers:</strong> {{ project.researchers }}</p>
+            <p><strong>Target Audience:</strong> {{ project.targetAudience }}</p>
+            <p><strong>Tool Link:</strong> <a [href]="project.toolLink" target="_blank" class="text-blue-600 underline">
+                {{ project.toolLink }}
+              </a></p>
+  
+            <button (click)="joinResearch(project.id)"
+              class="bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-4 rounded mt-2">
+              Join Research
+            </button>
+          </div>
+        </div>
+      </div>
+  
+      <ng-template #loading>
+        <p class="text-center text-gray-500">Loading research projects...</p>
+      </ng-template>
+  
+      <ng-template #noProjects>
+        <p class="text-center text-gray-500">No research projects available.</p>
+      </ng-template>
+    </div>
+  </section>
+  
