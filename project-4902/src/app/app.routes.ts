@@ -7,6 +7,7 @@ import { HowItWorksComponent } from './how-it-works/how-it-works.component';
 import { OurMissionComponent } from './our-mission/our-mission.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { ParticipantsResearchDetailsComponent } from './participants-research-details/participants-research-details.component';
 
 
 export const routes: Routes = [
@@ -17,5 +18,6 @@ export const routes: Routes = [
     {'path': 'how-it-works', component: HowItWorksComponent },
     {'path': 'our-mission', component: OurMissionComponent },
     {'path': 'about-us', component: AboutUsComponent },
-    {'path': 'contact-us', component: ContactUsComponent }
+    {'path': 'contact-us', component: ContactUsComponent },
+    {'path': 'participants-research-details', component: ParticipantsResearchDetailsComponent},
 ];
