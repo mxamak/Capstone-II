@@ -8,16 +8,18 @@ import { OurMissionComponent } from './our-mission/our-mission.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { ParticipantsResearchDetailsComponent } from './participants-research-details/participants-research-details.component';
-
+import { AuthGuard } from './auth.guard'; 
 
 export const routes: Routes = [
-    {'path': '', 'title':'Research Finder', component: HomeComponent},
-    {'path': 'login', 'title':'login', component: LoginComponent},
-    {'path': 'register', 'title':'register', component: RegistrationComponent},
-    {'path': 'research-creation', component: ResearchCreationComponent },
-    {'path': 'how-it-works', component: HowItWorksComponent },
-    {'path': 'our-mission', component: OurMissionComponent },
-    {'path': 'about-us', component: AboutUsComponent },
-    {'path': 'contact-us', component: ContactUsComponent },
-    {'path': 'participants-research-details', component: ParticipantsResearchDetailsComponent},
+  { path: '', title: 'Research Finder', component: HomeComponent },
+  { path: 'login', title: 'Login', component: LoginComponent },
+  { path: 'register', title: 'Register', component: RegistrationComponent },
+  { path: 'how-it-works', component: HowItWorksComponent },
+  { path: 'our-mission', component: OurMissionComponent },
+  { path: 'about-us', component: AboutUsComponent },
+  { path: 'contact-us', component: ContactUsComponent },
+
+  // 🔐 Protected Routes
+  { path: 'research-creation', component: ResearchCreationComponent, canActivate: [AuthGuard] },
+  { path: 'participants-research-details', component: ParticipantsResearchDetailsComponent, canActivate: [AuthGuard] }
 ];
