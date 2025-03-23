@@ -1,4 +1,4 @@
-<section class="text-gray-600 body-font">
+<!-- <section class="text-gray-600 body-font">
     <div class="container px-5 py-10 mx-auto">
       <h1 class="text-3xl font-medium title-font text-gray-900 mb-4 text-center">
         Available Research Projects
@@ -32,4 +32,30 @@
       </ng-template>
     </div>
   </section>
-  
+-->
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-10 mx-auto">
+    <h1 class="text-3xl font-medium title-font text-gray-900 mb-4 text-center">
+      Available Research Projects
+    </h1>
+
+    <!-- Success Message -->
+    <div *ngIf="showSuccessMessage" class="bg-green-500 text-white p-2 text-center rounded mb-4">
+      Successfully joined research project!
+    </div>
+
+    <div *ngFor="let project of researchProjects$ | async" class="bg-gray-100 p-4 rounded mb-4 shadow">
+      <h3 class="text-xl font-bold">{{ project.title }}</h3>
+      <p><strong>Description:</strong> {{ project.description }}</p>
+      <p><strong>Researchers:</strong> {{ project.researchers }}</p>
+      <p><strong>Target Audience:</strong> {{ project.targetAudience }}</p>
+      <p><strong>Tool Link:</strong> 
+        <a [href]="project.toolLink" target="_blank" class="text-blue-600 underline">{{ project.toolLink }}</a>
+      </p>
+
+      <button (click)="joinResearch(project.id)" class="bg-green-700 hover:bg-green-500 text-white font-bold py-1 px-3 rounded">
+        Join Research
+      </button>
+    </div>
+  </div>
+</section>
