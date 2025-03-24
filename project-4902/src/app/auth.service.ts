@@ -6,12 +6,12 @@ import { Observable, from } from "rxjs";
   providedIn: 'root'
 })
 export class AuthService {
-  firebaseAuth = inject(Auth);
+  firebaseAuth = inject(Auth); // ✅ This worked before — keep it
 
   register(email: string, username: string, password: string): Observable<void> {
     const promise = createUserWithEmailAndPassword(this.firebaseAuth, email, password).then(response => {
       updateProfile(response.user, { displayName: username });
-      localStorage.setItem('token', response.user.uid); // Save UID as token
+      localStorage.setItem('token', response.user.uid);
     });
     return from(promise);
   }
@@ -25,7 +25,7 @@ export class AuthService {
     );
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem('token');
   }
 
