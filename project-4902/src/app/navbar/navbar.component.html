@@ -6,15 +6,15 @@
     </a>
 
     <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
-      <a routerLink="/how-it-works" routerLinkActive="active" class="mr-5 hover:text-white">How it Works</a>
-      <a routerLink="/our-mission" routerLinkActive="active" class="mr-5 hover:text-white">Our Mission</a>
-      <a routerLink="/about-us" routerLinkActive="active" class="mr-5 hover:text-white">About Us</a>
-      <a routerLink="/contact-us" routerLinkActive="active" class="mr-5 hover:text-white">Contact Us</a>
+      <a routerLink="/additional-resources" routerLinkActive="active" class="mr-8 hover:text-white">Additional Resources</a>
+      <a routerLink="/news" routerLinkActive="active" class="mr-8 hover:text-white">News</a>
+      <a routerLink="/about-us" routerLinkActive="active" class="mr-8 hover:text-white">About Us</a>
+      <a routerLink="/contact-us" routerLinkActive="active" class="mr-8 hover:text-white">Contact Us</a>
 
       <!-- Show Login/Register if NOT logged in -->
       <ng-container *ngIf="!isLoggedIn">
-        <a routerLink="/login" routerLinkActive="active" class="mr-5 hover:bg-white hover:text-green-900 px-2 py-1 rounded transition duration-200 ease-in-out">Login</a>
-        <a routerLink="/register" routerLinkActive="active" class="mr-5 hover:bg-white hover:text-green-900 px-2 py-1 rounded transition duration-200 ease-in-out">Register</a>
+        <a routerLink="/login" routerLinkActive="active" class="mr-8 hover:bg-white hover:text-green-900 px-2 py-1 rounded transition duration-200 ease-in-out">Login</a>
+        <a routerLink="/register" routerLinkActive="active" class="mr-8 hover:bg-white hover:text-green-900 px-2 py-1 rounded transition duration-200 ease-in-out">Register</a>
       </ng-container>
 
       <!-- Show Logout if logged in -->
@@ -24,5 +24,6 @@
         </button>
       </ng-container>
     </nav>
+    
   </div>
 </header>

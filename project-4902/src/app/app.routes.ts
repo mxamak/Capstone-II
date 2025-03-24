@@ -9,6 +9,8 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { ParticipantsResearchDetailsComponent } from './participants-research-details/participants-research-details.component';
 import { AuthGuard } from './auth.guard'; 
+import { AdditionalResourcesComponent } from './additional-resources/additional-resources.component';
+import { NewsComponent } from './news/news.component';
 
 export const routes: Routes = [
   { path: '', title: 'Research Finder', component: HomeComponent },
@@ -18,6 +20,8 @@ export const routes: Routes = [
   { path: 'our-mission', component: OurMissionComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'contact-us', component: ContactUsComponent },
+  { path: 'additional-resources', component: AdditionalResourcesComponent},
+  { path: 'news', component: NewsComponent},
 
   // 🔐 Protected Routes
   { path: 'research-creation', component: ResearchCreationComponent, canActivate: [AuthGuard] },
