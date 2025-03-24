@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Feedback</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e6f7e6;
+      color: #155724;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #2e8b57;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    input, select, textarea {
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #2e8b57;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #2e8b57;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #237a4d;
+    }
+    .message {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .success {
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Submit Feedback</h1>
+  </header>
+
+  <main>
+    <h2>Your thoughts matter!</h2>
+    <form id="feedbackForm">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="email" id="email" placeholder="Your Email" required />
+      
+      <select id="project" required>
+        <option value="" disabled selected>Loading research projects...</option>
+      </select>
+
+      <textarea id="message" rows="5" placeholder="Your Feedback" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+    <div class="message" id="responseMessage"></div>
+  </main>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
+
+  <script>
+    // ✅ Step 1: Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAn3B1UoeUJG3r5BX7vicSDb-PA9AOEzHo",
+      authDomain: "research-finder-33c2b.firebaseapp.com",
+      projectId: "research-finder-33c2b",
+      storageBucket: "research-finder-33c2b.appspot.com",
+      messagingSenderId: "223873501213",
+      appId: "1:223873501213:web:549f64292f3e6c95aa9ef4",
+      measurementId: "G-7WTRB4LCNJ"
+    };
+
+    // ✅ Step 2: Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const analytics = firebase.analytics();
+    const db = firebase.firestore();
+
+    // ✅ Step 3: Load Research Projects
+    const projectSelect = document.getElementById("project");
+    const responseMessage = document.getElementById("responseMessage");
+
+    db.collection("Research-Projects").get().then(snapshot => {
+      projectSelect.innerHTML = '<option value="" disabled selected>Select a Research Project</option>';
+      
+      if (snapshot.empty) {
+        projectSelect.innerHTML = '<option disabled>No projects available</option>';
+      } else {
+        snapshot.forEach(doc => {
+          const id = doc.id;
+          const title = doc.data()["Project Title"];
+
+          if (title) {
+            const option = document.createElement("option");
+            option.value = JSON.stringify({ id: id, title: title });
+            option.textContent = title;
+            projectSelect.appendChild(option);
+          }
+        });
+      }
+    }).catch((error) => {
+      console.error("Error loading projects:", error);
+      responseMessage.innerHTML = '<span class="error">❌ Failed to load projects.</span>';
+    });
+
+    // ✅ Step 4: Submit Feedback
+    document.getElementById("feedbackForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      const selected = JSON.parse(document.getElementById("project").value);
+      const projectId = selected.id;
+      const projectTitle = selected.title;
+
+      db.collection("feedbacks").add({
+        name,
+        email,
+        projectId,
+        projectTitle,
+        message,
+        timestamp: new Date().toISOString()
+      })
+      .then(() => {
+        responseMessage.innerHTML = '<span class="success">✅ Feedback submitted successfully!</span>';
+        document.getElementById("feedbackForm").reset();
+      })
+      .catch((error) => {
+        console.error("Error submitting feedback:", error);
+        responseMessage.innerHTML = '<span class="error">❌ Failed to submit feedback. Please try again.</span>';
+      });
+    });
+  </script>
+
+</body>
+</html>
