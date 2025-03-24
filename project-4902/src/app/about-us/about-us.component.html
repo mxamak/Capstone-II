@@ -1,74 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Research Finder</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e6f7e6; /* Light green background */
-            color: #155724; /* Dark green text */
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #2e8b57; /* Green header */
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        main {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1, h2 {
-            text-align: center;
-        }
-        .cta {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .cta a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #2e8b57;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .cta a:hover {
-            background-color: #237a4d;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>About Us</h1>
-    </header>
-    <main>
-        <h2>Connecting Researchers & Students</h2>
-        <p><strong>Research Finder</strong> is a platform designed to bridge the gap between researchers and students. Our goal is to facilitate seamless collaboration by connecting students with research mentors and experts in their field.</p>
-
-        <h2>Our Mission</h2>
-        <p>We believe that research should be **accessible** to all, and collaboration is the key to innovation. With Research Finder, students can explore research opportunities, and researchers can find passionate minds eager to contribute.</p>
-
-        <h2>Why Choose Research Finder?</h2>
-        <ul>
-            <li>🔍 <strong>Smart Matching:</strong> Find the right research projects and mentors tailored to your interests.</li>
-            <li>📢 <strong>Effortless Communication:</strong> Message, schedule meetings, and collaborate easily.</li>
-            <li>🌎 <strong>Global Research Network:</strong> Connect with professionals across various disciplines.</li>
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-12 mx-auto max-w-4xl">
+      <!-- Page Heading -->
+      <div class="text-center mb-12">
+        <h1 class="sm:text-5xl text-3xl font-bold title-font text-gray-900 mt-2 mb-4">Who We Are</h1>
+        <p class="text-base leading-relaxed text-green-900 max-w-2xl mx-auto">
+          Research Finder is your gateway to collaborative research. We connect passionate students with researchers to make innovation more accessible, one project at a time.
+        </p>
+      </div>
+  
+      <!-- Card: Mission -->
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-8 mb-10">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Mission</h2>
+        <p class="text-gray-700 leading-relaxed">
+          We believe research should be <span class="font-semibold">accessible</span> to all. Our mission is to democratize discovery by giving students a direct pathway into research teams and helping researchers find motivated contributors across disciplines.
+        </p>
+      </div>
+  
+      <!-- Card: Why Choose Us -->
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-8 mb-10">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Why Choose Research Finder?</h2>
+        <ul class="space-y-5 text-gray-700">
+          <li class="flex items-start gap-4">
+            <span class="text-xl">🔍</span>
+            <div>
+              <p class="font-semibold text-gray-900">Smart Matching</p>
+              <p class="text-sm">Discover research projects that align with your academic interests and skill sets.</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <span class="text-xl">📢</span>
+            <div>
+              <p class="font-semibold text-gray-900">Effortless Communication</p>
+              <p class="text-sm">Built-in tools for messaging, scheduling, and staying connected with your team.</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <span class="text-xl">🌎</span>
+            <div>
+              <p class="font-semibold text-gray-900">Expanding Research Network</p>
+              <p class="text-sm">Connect with researchers from UNT and other institutions across various disciplines.</p>
+            </div>
+          </li>
         </ul>
-
-        <div class="cta">
-            <a href="#">Join Us Today!</a>
-        </div>
-    </main>
-</body>
-</html>
+      </div>
+  
+      <!-- Card: CTA -->
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-8 text-center">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Ready to Get Involved?</h2>
+        <p class="text-gray-700 mb-6 max-w-xl mx-auto">
+          Whether you're a student eager to dive into research or a faculty member seeking contributors — Research Finder is here to help.
+        </p>
+        <a routerLink="/register" class="inline-block px-6 py-3 bg-green-800 text-white font-medium rounded-lg shadow hover:bg-green-700 transition">
+          Join Us Today →
+        </a>
+      </div>
+    </div>
+  </section>
+  

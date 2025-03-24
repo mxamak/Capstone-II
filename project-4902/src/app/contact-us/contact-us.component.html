@@ -1,86 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Research Finder</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e6f7e6; /* Light green background */
-            color: #155724; /* Dark green text */
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #2e8b57; /* Green header */
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        main {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1, h2 {
-            text-align: center;
-        }
-        .contact-info {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #2e8b57;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button {
-            background-color: #2e8b57;
-            color: white;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #237a4d;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Contact Us</h1>
-    </header>
-    <main>
-        <h2>Get in Touch with Our Team</h2>
-        <p>If you have any questions, feedback, or collaboration inquiries, feel free to reach out to us. Our team at **Research Finder** is always happy to help!</p>
-
-        <div class="contact-info">
-            <p>📍 Address: XXX, XXX, XXX</p>
-            <p>📞 Phone: XXX-XXX-XXXX</p>
-            <p>📧 Email: contact&#64;XXX.com</p>
-        </div>
-
-        <h2>Send Us a Message</h2>
-        <form class="contact-form">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-            <button type="submit">Send Message</button>
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-12 mx-auto max-w-2xl">
+      <div class="text-center mb-10">
+        <h1 class="sm:text-5xl text-3xl font-bold title-font text-gray-900 mt-2 mb-4">Get in Touch</h1>
+        <p class="text-base leading-relaxed text-green-900">
+          Have questions, feedback, or ideas for collaboration? Reach out to the Research Finder team — we’d love to hear from you!
+        </p>
+      </div>
+  
+      <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+        <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <input type="text" formControlName="name" class="w-full p-3 border rounded-lg focus:ring focus:ring-green-300" placeholder="Your full name" />
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input type="email" formControlName="email" class="w-full p-3 border rounded-lg focus:ring focus:ring-green-300" placeholder="you@example.com" />
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+            <textarea rows="5" formControlName="message" class="w-full p-3 border rounded-lg focus:ring focus:ring-green-300" placeholder="What's on your mind?"></textarea>
+          </div>
+  
+          <button type="submit" [disabled]="loading" class="w-full bg-green-800 text-white py-3 rounded-lg hover:bg-green-700 transition">
+            {{ loading ? 'Sending...' : 'Send Message' }}
+          </button>
+  
+          <p *ngIf="success" class="text-green-600 mt-4 text-center">✅ Message sent successfully!</p>
+          <p *ngIf="error" class="text-red-500 mt-4 text-center">{{ error }}</p>
         </form>
-    </main>
-</body>
-</html>
+      </div>
+    </div>
+  </section>
+  
