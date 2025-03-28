@@ -11,6 +11,9 @@ import { ParticipantsResearchDetailsComponent } from './participants-research-de
 import { AuthGuard } from './auth.guard'; 
 import { AdditionalResourcesComponent } from './additional-resources/additional-resources.component';
 import { NewsComponent } from './news/news.component';
+import { ViewProfileComponent } from './view-profile/view-profile.component';
+import { ViewOthersProfileComponent } from './view-others-profile/view-others-profile.component';
+import { YourProjectsComponent } from './your-projects/your-projects.component';
 
 export const routes: Routes = [
   { path: '', title: 'Research Finder', component: HomeComponent },
@@ -22,6 +25,9 @@ export const routes: Routes = [
   { path: 'contact-us', component: ContactUsComponent },
   { path: 'additional-resources', component: AdditionalResourcesComponent},
   { path: 'news', component: NewsComponent},
+  { path: 'view-profile', component: ViewProfileComponent},
+  { path: 'view-others-profile/:userId',  component: ViewOthersProfileComponent},
+  { path: 'your-projects', component: YourProjectsComponent},
 
   // 🔐 Protected Routes
   { path: 'research-creation', component: ResearchCreationComponent, canActivate: [AuthGuard] },

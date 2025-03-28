@@ -44,6 +44,7 @@
       Successfully joined research project!
     </div>
 
+    <!-- Loop through research projects -->
     <div *ngFor="let project of researchProjects$ | async" class="bg-gray-100 p-4 rounded mb-4 shadow">
       <h3 class="text-xl font-bold">{{ project.title }}</h3>
       <p><strong>Description:</strong> {{ project.description }}</p>
@@ -53,7 +54,27 @@
         <a [href]="project.toolLink" target="_blank" class="text-blue-600 underline">{{ project.toolLink }}</a>
       </p>
 
-      <button (click)="joinResearch(project.id)" class="bg-green-700 hover:bg-green-500 text-white font-bold py-1 px-3 rounded">
+      <!-- Display Participants List -->
+      <h4 class="mt-4 font-medium">Participants:</h4>
+      <ul class="list-disc pl-5">
+        <li *ngFor="let participant of project['participants']">
+          <div class="flex justify-between items-center py-2 border-b">
+            <span>
+              <!-- Make participant name clickable -->
+              <a [routerLink]="['/view-others-profile', participant.uid]" class="text-blue-600 hover:underline">
+                {{ participant.displayName }} ({{ participant.email }})
+              </a>
+            </span>
+            <!-- Optionally add a "Remove" button if the user can remove themselves -->
+            <button *ngIf="participant.uid === auth.currentUser?.uid" (click)="removeParticipant(project.id, participant.uid)" class="bg-red-500 text-white py-1 px-2 rounded">
+              Remove
+            </button>
+          </div>
+        </li>
+      </ul>
+
+      <!-- Join Research Button -->
+      <button (click)="joinResearch(project.id)" class="bg-green-700 hover:bg-green-500 text-white font-bold py-1 px-3 rounded mt-3">
         Join Research
       </button>
     </div>

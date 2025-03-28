@@ -1,0 +1,23 @@
+<div class="profile-container">
+    <h2 class="text-2xl font-semibold">Researcher Profile</h2>
+  
+    <!-- Profile Icon -->
+    <div class="profile-icon w-16 h-16 rounded-full bg-green-800 text-white flex items-center justify-center text-xl font-bold uppercase">
+      <ng-container *ngIf="userData?.username; else initials">
+        {{ getInitials(userData.username, userData.email) }}
+      </ng-container>
+      <ng-template #initials>
+        {{ getInitials(userData.username, userData.email) }}
+      </ng-template>
+    </div>
+  
+    <!-- User Info -->
+    <div class="user-details">
+        <p><strong>Username:</strong> {{ userData?.username || 'No username set' }}</p>
+        <p><strong>Email:</strong> {{ userData?.email }}</p>
+        <p><strong>Description:</strong> {{ userData?.description || 'No description available' }}</p>
+    </div>
+</div>
+  
+
+

@@ -1,0 +1,25 @@
+.profile-container {
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .profile-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px auto;
+  }
+  
+  .user-details p {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  

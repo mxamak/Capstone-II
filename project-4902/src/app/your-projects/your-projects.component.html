@@ -1,0 +1,28 @@
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-10 mx-auto">
+      <h1 class="text-3xl font-medium title-font text-gray-900 mb-4 text-center">
+        Your Projects
+      </h1>
+  
+      <div *ngIf="userProjects$ | async as projects; else noProjects">
+        <div *ngFor="let project of projects" class="bg-white p-4 rounded mb-4 shadow-md">
+          <h3 class="text-xl font-semibold">{{ project.title }}</h3>
+          <p class="text-gray-600">{{ project.description }}</p>
+          <p><strong>Target Audience:</strong> {{ project.targetAudience }}</p>
+          <p><strong>Researchers:</strong> {{ project.researchers }}</p>
+  
+          <div *ngIf="userType === 'participant'">
+            <p><strong>Joined as Participant</strong></p>
+          </div>
+          <div *ngIf="userType === 'researcher'">
+            <p><strong>Created by:</strong> {{ project.createdBy }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <ng-template #noProjects>
+        <p class="text-center text-gray-500">You don't have any projects yet.</p>
+      </ng-template>
+    </div>
+  </section>
+  

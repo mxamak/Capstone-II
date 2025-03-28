@@ -42,14 +42,15 @@ export class ParticipantsResearchDetailsComponent {
 }
 */
 import { Component, OnInit } from '@angular/core';
-import { Firestore, collection, collectionData, updateDoc, doc, arrayUnion } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, updateDoc, doc, arrayUnion, getDoc} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Auth } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-participants-research-details',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './participants-research-details.component.html',
   styleUrls: ['./participants-research-details.component.css']
 })
@@ -57,19 +58,30 @@ export class ParticipantsResearchDetailsComponent implements OnInit {
   researchProjects$: Observable<any[]>;
   showSuccessMessage = false;
 
-  constructor(private firestore: Firestore, private auth: Auth) {
+  // Make auth public so it's accessible in the template
+  public auth: Auth;
+
+  constructor(private firestore: Firestore, private authService: Auth) {
+    this.auth = authService;
     const researchCollection = collection(this.firestore, 'Create-Research');
     this.researchProjects$ = collectionData(researchCollection, { idField: 'id' });
   }
 
+  // Join research project method
   async joinResearch(researchId: string) {
     const user = this.auth.currentUser;
     if (user) {
       try {
         const researchDoc = doc(this.firestore, `Create-Research/${researchId}`);
+        // Add user to participants with displayName and UID
         await updateDoc(researchDoc, {
-          participants: arrayUnion(user.email)
+          participants: arrayUnion({
+            uid: user.uid,  // User's UID
+            displayName: user.displayName || 'Anonymous User',  // Display name (or fallback to 'Anonymous User')
+            email: user.email  // User's email
+          })
         });
+
         this.showSuccessMessage = true;
 
         // Hide success message after 3 seconds
@@ -83,6 +95,32 @@ export class ParticipantsResearchDetailsComponent implements OnInit {
       }
     } else {
       console.warn('User must be logged in to join a research project');
+    }
+  }
+
+  // Remove a participant method
+  async removeParticipant(researchId: string, participantUid: string) {
+    const researchDoc = doc(this.firestore, `Create-Research/${researchId}`);
+    
+    try {
+      const researchSnap = await getDoc(researchDoc);
+      if (researchSnap.exists()) {
+        const researchData = researchSnap.data();
+        // Remove the participant with the matching UID
+        const updatedParticipants = researchData['participants'].filter((p: any) => p.uid !== participantUid);
+        await updateDoc(researchDoc, { participants: updatedParticipants });
+
+        this.showSuccessMessage = true;
+
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+          this.showSuccessMessage = false;
+        }, 3000);
+
+        console.log(`Participant ${participantUid} removed from research project ${researchId}`);
+      }
+    } catch (error) {
+      console.error('Error removing participant:', error);
     }
   }
 

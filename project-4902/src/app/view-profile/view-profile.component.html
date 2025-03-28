@@ -1,0 +1,34 @@
+
+<div class="profile-container">
+    <h2>View Profile</h2>
+  
+    <!-- User Info -->
+    <div class="user-info">
+      <div class="profile-icon">
+        <ng-container *ngIf="user?.photoURL; else initials">
+          <img [src]="user?.photoURL" alt="Profile" class="profile-img"/>
+        </ng-container>
+        <ng-template #initials>
+          {{ getInitials(user?.displayName, user?.email) }}
+        </ng-template>
+      </div>
+  
+      <div class="user-details">
+        <p><strong>Email:</strong> {{ user?.email }}</p>
+        <p><strong>Username:</strong> {{ user?.displayName || 'No username set' }}</p>
+      </div>
+    </div>
+  
+    <!-- Description Editor -->
+    <div class="description-container">
+      <label for="description">Description:</label>
+      <textarea 
+        id="description" 
+        [(ngModel)]="description" 
+        rows="4" 
+        placeholder="Write something about yourself...">
+      </textarea>
+      <button (click)="saveDescription()" class="save-button">Save Description</button>
+    </div>
+  </div>
+  

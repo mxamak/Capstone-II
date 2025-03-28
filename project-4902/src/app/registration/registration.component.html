@@ -1,40 +1,50 @@
-<div class="flex flex-col justify-center font-[sans-serif] sm:h-screen p-4">
-  <div class="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8">
+<div class="flex flex-col justify-center font-[sans-serif] sm:h-screen p-4 ">
+  <div class="max-w-md w-full mx-auto mt-8 rounded-2xl p-8">  <!-- Removed border & added mt-8 -->
     <div class="text-center text-4xl mb-12 text-green-900">
       <h2 class="lg:text-6xl text-4xl font-extrabold lg:leading-[55px] text-green-900">
         Research Finder
       </h2>
     </div>
 
-    <form (ngSubmit)="registerUser()">
+    <form [formGroup]="registrationForm" (ngSubmit)="registerUser()">
       <div class="space-y-6">
         <div>
           <label class="text-gray-800 text-sm mb-2 block">Email Id</label>
-          <input name="email" type="text" [(ngModel)]="user.email"
+          <input type="text" formControlName="email"
             class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
             placeholder="Enter email" required />
         </div>
         <div>
           <label class="text-gray-800 text-sm mb-2 block">Username</label>
-          <input name="username" type="text" [(ngModel)]="user.username"
+          <input type="text" formControlName="username"
             class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
             placeholder="Enter username" required />
         </div>
         <div>
           <label class="text-gray-800 text-sm mb-2 block">Password</label>
-          <input name="password" type="password" [(ngModel)]="password"
+          <input type="password" formControlName="password"
             class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
             placeholder="Enter password" required />
         </div>
         <div>
           <label class="text-gray-800 text-sm mb-2 block">Confirm Password</label>
-          <input name="cpassword" type="password" [(ngModel)]="confirmPassword"
+          <input type="password" formControlName="confirmPassword"
             class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
             placeholder="Enter confirm password" required />
         </div>
+        <div>
+          <label class="text-gray-800 text-sm mb-2 block">User Type</label>
+          <select formControlName="userType"
+            class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500">
+            <option value="participant">Participant</option>
+            <option value="researcher">Researcher</option>
+          </select>
+        </div>
       </div>
 
-      <p *ngIf="errorMessage" class="text-red-500 text-sm mt-4">{{ errorMessage }}</p>
+      <p *ngIf="registrationForm.invalid && registrationForm.touched" class="text-red-500 text-sm mt-4">
+        Please fill out all required fields correctly.
+      </p>
 
       <div class="!mt-8">
         <button type="submit"
@@ -42,7 +52,8 @@
           Create an account
         </button>
       </div>
-      <p class="text-gray-800 text-sm mt-6 text-center">Already have an account? 
+      <p class="text-gray-800 text-sm mt-6 text-center">
+        Already have an account?
         <a routerLink="/login" class="text-green-500 font-semibold hover:underline ml-1">Login here</a>
       </p>
     </form>
