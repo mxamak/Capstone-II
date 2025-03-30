@@ -106,23 +106,29 @@ export class ParticipantsResearchDetailsComponent implements OnInit {
       const researchSnap = await getDoc(researchDoc);
       if (researchSnap.exists()) {
         const researchData = researchSnap.data();
-        // Remove the participant with the matching UID
-        const updatedParticipants = researchData['participants'].filter((p: any) => p.uid !== participantUid);
+        const participants = researchData['participants'] || [];
+  
+        // Ensure the participants array is an array of objects
+        if (!Array.isArray(participants)) {
+          console.error('Participants data is not an array:', participants);
+          return;
+        }
+  
+        // Remove participant based on UID
+        const updatedParticipants = participants.filter((p: any) => p.uid !== participantUid);
+  
+        // Update Firestore document
         await updateDoc(researchDoc, { participants: updatedParticipants });
-
-        this.showSuccessMessage = true;
-
-        // Hide success message after 3 seconds
-        setTimeout(() => {
-          this.showSuccessMessage = false;
-        }, 3000);
-
+  
         console.log(`Participant ${participantUid} removed from research project ${researchId}`);
+      } else {
+        console.warn('Research project document does not exist.');
       }
     } catch (error) {
       console.error('Error removing participant:', error);
     }
   }
+  
 
   ngOnInit(): void {}
 }

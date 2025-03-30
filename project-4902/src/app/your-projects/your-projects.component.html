@@ -4,25 +4,43 @@
         Your Projects
       </h1>
   
-      <div *ngIf="userProjects$ | async as projects; else noProjects">
-        <div *ngFor="let project of projects" class="bg-white p-4 rounded mb-4 shadow-md">
-          <h3 class="text-xl font-semibold">{{ project.title }}</h3>
-          <p class="text-gray-600">{{ project.description }}</p>
-          <p><strong>Target Audience:</strong> {{ project.targetAudience }}</p>
-          <p><strong>Researchers:</strong> {{ project.researchers }}</p>
+      <!-- Display projects when data is available -->
+      <div *ngIf="(userProjects$ | async) as projects; else noProjects">
+        <p *ngIf="projects.length === 0" class="text-center text-gray-500">
+          🚨 No projects found that you have joined.
+        </p>
   
+        <!-- Iterate through the list of projects -->
+        <div *ngFor="let project of projects" class="bg-white p-4 rounded mb-4 shadow-md">
+          <h3 class="text-xl font-semibold">{{ project?.title || 'No Title' }}</h3>
+          <p class="text-gray-600">{{ project?.description || 'No Description' }}</p>
+          <p><strong>Target Audience:</strong> {{ project?.targetAudience || 'N/A' }}</p>
+          <p><strong>Researchers:</strong> {{ project?.researchers || 'N/A' }}</p>
+  
+          <!-- Show "Joined as Participant" if the user is a participant -->
           <div *ngIf="userType === 'participant'">
             <p><strong>Joined as Participant</strong></p>
           </div>
+
+  
+          <!-- Show "Created by" if the user is a researcher -->
           <div *ngIf="userType === 'researcher'">
-            <p><strong>Created by:</strong> {{ project.createdBy }}</p>
+            <p><strong>Created by:</strong> {{ project?.createdBy || 'Unknown' }}</p>
+          </div>
+  
+          <!-- Optionally display tool link -->
+          <div *ngIf="project?.toolLink">
+            <p><strong>Tool Link:</strong> <a [href]="project.toolLink" target="_blank">Open Tool</a></p>
           </div>
         </div>
       </div>
   
+      <!-- Template for when no projects are available -->
       <ng-template #noProjects>
-        <p class="text-center text-gray-500">You don't have any projects yet.</p>
+        <p class="text-center text-red-500">🚨 No projects found! Check the console or Firestore data.</p>
       </ng-template>
     </div>
   </section>
-  
+  <div *ngFor="let project of projects">
+    <h3>{{ project.title }}</h3>
+    

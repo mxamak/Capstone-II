@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Firestore, collection, addDoc, collectionData, doc, updateDoc, deleteDoc, serverTimestamp, arrayUnion, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, doc, updateDoc, deleteDoc, serverTimestamp, arrayUnion, arrayRemove, getDoc } from '@angular/fire/firestore';
 import { Auth, User } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -37,10 +37,9 @@ export class ResearchCreationComponent {
       researchers: [''],
       targetAudience: [''],
       toolLink: [''],
-      participants: [[]]
+      participants: [[]] // Store participants as an array of UIDs
     });
 
-    // Fetch research projects, ensuring participants array exists
     const collectionRef = collection(this.firestore, 'Create-Research');
     this.researchProjects$ = collectionData(collectionRef, { idField: 'id' }).pipe(
       map(projects => projects.map(proj => ({
@@ -48,8 +47,9 @@ export class ResearchCreationComponent {
         participants: Array.isArray(proj['participants']) ? proj['participants'] : []
       })))
     );
+    
+    
 
-    // Get the currently logged-in user
     this.auth.onAuthStateChanged(user => {
       this.currentUser = user;
     });
@@ -85,20 +85,6 @@ export class ResearchCreationComponent {
     }
   }
 
-  editResearch(research: any) {
-    this.selectedResearchId = research.id;
-    this.researchForm.patchValue({
-      title: research.title,
-      description: research.description,
-      researchers: research.researchers,
-      targetAudience: research.targetAudience,
-      toolLink: research.toolLink,
-      participants: research['participants'] || []
-    });
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
   async addParticipantToProject(projectId: string) {
     if (!this.currentUser) return;
     
@@ -115,6 +101,35 @@ export class ResearchCreationComponent {
     }
   }
 
+  editResearch(research: any) {
+    this.selectedResearchId = research.id;
+    this.researchForm.patchValue({
+      title: research.title,
+      description: research.description,
+      researchers: research.researchers,
+      targetAudience: research.targetAudience,
+      toolLink: research.toolLink,
+      participants: research['participants'] || []
+    });
+  
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  
+  async deleteResearch(id: string) {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent);
+  
+    dialogRef.afterClosed().subscribe(async (confirmed) => {
+      if (confirmed) {
+        try {
+          const docRef = doc(this.firestore, 'Create-Research', id);
+          await deleteDoc(docRef);
+          this.snackBar.open('❌ Research project deleted successfully!', 'Close', { duration: 3000 });
+        } catch (error) {
+          console.error('Error deleting document:', error);
+        }
+      }
+    });
+  }
   async removeParticipant(projectId: string, participantUid: string) {
     const projectRef = doc(this.firestore, 'Create-Research', projectId);
 
@@ -132,20 +147,5 @@ export class ResearchCreationComponent {
       console.error('Error removing participant:', error);
     }
   }
-
-  async deleteResearch(id: string) {
-    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent);
-
-    dialogRef.afterClosed().subscribe(async (confirmed) => {
-      if (confirmed) {
-        try {
-          const docRef = doc(this.firestore, 'Create-Research', id);
-          await deleteDoc(docRef);
-          this.snackBar.open('❌ Research project deleted successfully!', 'Close', { duration: 3000 });
-        } catch (error) {
-          console.error('Error deleting document:', error);
-        }
-      }
-    });
-  }
+  
 }
