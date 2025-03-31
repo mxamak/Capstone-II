@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Feedback</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      color: #1a202c;
+    }
+
+    header {
+      text-align: center;
+      padding-top: 60px;
+      padding-bottom: 10px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1a202c;
+      margin-bottom: 12px;
+    }
+
+    header p {
+      font-size: 1rem;
+      color: #166534;
+      margin: 0 auto;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    form {
+      width: 100%;
+      max-width: 640px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 16px 20px;
+      font-size: 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background-color: #f9fafb;
+      color: #1a202c;
+      transition: border-color 0.2s;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #a0aec0;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      background-color: #fff;
+      border-color: #166534;
+    }
+
+    button {
+      background-color: #166534;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #14532d;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 16px;
+      font-weight: 500;
+    }
+
+    .success {
+      color: #38a169;
+    }
+
+    .error {
+      color: #e53e3e;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Get in Touch</h1>
+    <p>Have questions, feedback, or ideas for collaboration? Reach out to the Research Finder team — we’d love to hear from you!</p>
+  </header>
+
+  <main>
+    <form id="feedbackForm">
+      <input type="text" id="name" placeholder="Your full name" required />
+      <input type="email" id="email" placeholder="you@example.com" required />
+      <select id="project" required>
+        <option value="" disabled selected>Loading research projects...</option>
+      </select>
+      <textarea id="message" rows="5" placeholder="What's on your mind?" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </main>
+
+  <div class="message" id="responseMessage"></div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAn3B1UoeUJG3r5BX7vicSDb-PA9AOEzHo",
+      authDomain: "research-finder-33c2b.firebaseapp.com",
+      projectId: "research-finder-33c2b",
+      storageBucket: "research-finder-33c2b.appspot.com",
+      messagingSenderId: "223873501213",
+      appId: "1:223873501213:web:549f64292f3e6c95aa9ef4",
+      measurementId: "G-7WTRB4LCNJ"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const analytics = firebase.analytics();
+    const db = firebase.firestore();
+
+    const projectSelect = document.getElementById("project");
+    const responseMessage = document.getElementById("responseMessage");
+
+    db.collection("Research-Projects").get().then(snapshot => {
+      projectSelect.innerHTML = '<option value="" disabled selected>Select a Research Project</option>';
+      
+      if (snapshot.empty) {
+        projectSelect.innerHTML = '<option disabled>No projects available</option>';
+      } else {
+        snapshot.forEach(doc => {
+          const id = doc.id;
+          const title = doc.data()["Project Title"];
+          if (title) {
+            const option = document.createElement("option");
+            option.value = JSON.stringify({ id: id, title: title });
+            option.textContent = title;
+            projectSelect.appendChild(option);
+          }
+        });
+      }
+    }).catch((error) => {
+      console.error("Error loading projects:", error);
+      responseMessage.innerHTML = '<span class="error">❌ Failed to load projects.</span>';
+    });
+
+    document.getElementById("feedbackForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message").value.trim();
+      const selected = JSON.parse(document.getElementById("project").value);
+      const projectId = selected.id;
+      const projectTitle = selected.title;
+
+      db.collection("feedbacks").add({
+        name,
+        email,
+        projectId,
+        projectTitle,
+        message,
+        timestamp: new Date().toISOString()
+      })
+      .then(() => {
+        responseMessage.innerHTML = '<span class="success">✅ Feedback submitted successfully!</span>';
+        document.getElementById("feedbackForm").reset();
+      })
+      .catch((error) => {
+        console.error("Error submitting feedback:", error);
+        responseMessage.innerHTML = '<span class="error">❌ Failed to submit feedback. Please try again.</span>';
+      });
+    });
+  </script>
+
+</body>
+</html>
