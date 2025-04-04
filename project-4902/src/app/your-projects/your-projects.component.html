@@ -1,46 +1,119 @@
 <section class="text-gray-600 body-font">
-    <div class="container px-5 py-10 mx-auto">
-      <h1 class="text-3xl font-medium title-font text-gray-900 mb-4 text-center">
-        Your Projects
-      </h1>
-  
-      <!-- Display projects when data is available -->
-      <div *ngIf="(userProjects$ | async) as projects; else noProjects">
-        <p *ngIf="projects.length === 0" class="text-center text-gray-500">
-          🚨 No projects found that you have joined.
-        </p>
-  
-        <!-- Iterate through the list of projects -->
-        <div *ngFor="let project of projects" class="bg-white p-4 rounded mb-4 shadow-md">
-          <h3 class="text-xl font-semibold">{{ project?.title || 'No Title' }}</h3>
-          <p class="text-gray-600">{{ project?.description || 'No Description' }}</p>
-          <p><strong>Target Audience:</strong> {{ project?.targetAudience || 'N/A' }}</p>
-          <p><strong>Researchers:</strong> {{ project?.researchers || 'N/A' }}</p>
-  
-          <!-- Show "Joined as Participant" if the user is a participant -->
-          <div *ngIf="userType === 'participant'">
-            <p><strong>Joined as Participant</strong></p>
+  <div class="container px-5 py-10 mx-auto">
+    <h1 class="text-3xl font-medium title-font text-gray-900 mb-4 text-center">
+      Your Projects
+    </h1>
+
+    <!-- Display projects when data is available -->
+    <div *ngIf="(userProjects$ | async) as projects; else noProjects">
+      <p *ngIf="projects.length === 0" class="text-center text-gray-500">
+        🚨 No projects found that you have joined.
+      </p>
+
+      <!-- Iterate through the list of projects -->
+      <div *ngFor="let project of projects" class="bg-white p-4 rounded mb-4 shadow-md">
+        <h3 class="text-xl font-semibold">{{ project?.title || 'No Title' }}</h3>
+        <p class="text-gray-600">{{ project?.description || 'No Description' }}</p>
+        <p><strong>Target Audience:</strong> {{ project?.targetAudience || 'N/A' }}</p>
+        <p><strong>Researchers:</strong> {{ project?.researchers || 'N/A' }}</p>
+
+        <!-- Optionally display tool link -->
+        <div *ngIf="project?.toolLink">
+          <p>
+            <strong>Tool Link:</strong>
+            <a [href]="project.toolLink" target="_blank" class="text-blue-600 underline">Open Tool</a>
+          </p>
+        </div>
+
+        <!-- Show "Joined as Participant" if the user is a participant -->
+        <div *ngIf="userType === 'participant'">
+          <p><strong>Joined as Participant</strong></p>
+          <button (click)="addFeedback(project.id)" class="bg-green-700 hover:bg-green-500 text-white py-1 px-3 rounded mt-3">
+            Add Feedback
+          </button>
+        </div>
+
+        <!-- Show "Created by" if the user is a researcher -->
+        <div *ngIf="userType === 'researcher'">
+          <p><strong>Created by:</strong> {{ project?.createdBy || 'Unknown' }}</p>
+
+          <!-- Participants Dropdown -->
+          <div class="relative mt-4">
+            <button (click)="toggleParticipants(project.id)" class="bg-blue-600 hover:bg-blue-500 text-white py-1 px-3 rounded flex justify-between w-full">
+              Participants
+              <span [class.rotate-180]="expandedProjects[project.id]">&#9660;</span>
+            </button>
+
+            <div *ngIf="expandedProjects[project.id]" class="absolute left-0 w-full bg-white shadow-lg border rounded mt-1 z-10">
+              <ul class="max-h-60 overflow-auto">
+                <li *ngFor="let participant of project['participants']" class="p-2 border-b flex justify-between items-center">
+                  <a [routerLink]="['/view-others-profile', participant.uid]" class="text-blue-600 hover:underline">
+                    {{ participant.displayName }} ({{ participant.email }})
+                  </a>
+                  <button (click)="removeParticipant(project.id, participant.uid)"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
+                    ❌
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
 
-  
-          <!-- Show "Created by" if the user is a researcher -->
-          <div *ngIf="userType === 'researcher'">
-            <p><strong>Created by:</strong> {{ project?.createdBy || 'Unknown' }}</p>
+          <!-- Button to View Feedback -->
+          <button (click)="viewFeedback(project.id)" class="bg-yellow-500 hover:bg-yellow-400 text-white py-1 px-3 rounded mt-3">
+            View Feedback
+          </button>
+
+          <!-- Buttons for Edit and Delete -->
+          <div class="flex mt-4 space-x-3">
+            <button (click)="editResearch(project)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded">
+              Edit
+            </button>
+            <button (click)="deleteResearch(project.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
+              Delete
+            </button>
           </div>
-  
-          <!-- Optionally display tool link -->
-          <div *ngIf="project?.toolLink">
-            <p><strong>Tool Link:</strong> <a [href]="project.toolLink" target="_blank">Open Tool</a></p>
+
+          <!-- Inline Edit Form -->
+          <div *ngIf="selectedProjectId === project.id" class="mt-4 bg-gray-100 p-4 rounded-lg shadow-inner">
+            <form [formGroup]="editForm" (ngSubmit)="saveProjectChanges()">
+              <div class="mb-2">
+                <label class="block font-medium text-gray-700">Title</label>
+                <input formControlName="title" class="w-full p-2 border rounded" />
+              </div>
+              <div class="mb-2">
+                <label class="block font-medium text-gray-700">Description</label>
+                <textarea formControlName="description" rows="3" class="w-full p-2 border rounded"></textarea>
+              </div>
+              <div class="mb-2">
+                <label class="block font-medium text-gray-700">Researchers</label>
+                <input formControlName="researchers" class="w-full p-2 border rounded" />
+              </div>
+              <div class="mb-2">
+                <label class="block font-medium text-gray-700">Target Audience</label>
+                <input formControlName="targetAudience" class="w-full p-2 border rounded" />
+              </div>
+              <div class="mb-2">
+                <label class="block font-medium text-gray-700">Tool Link</label>
+                <input formControlName="toolLink" class="w-full p-2 border rounded" />
+              </div>
+              <div class="flex space-x-3 mt-3">
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-3 rounded">
+                  Save
+                </button>
+                <button type="button" (click)="selectedProjectId = null" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-1 px-3 rounded">
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-  
-      <!-- Template for when no projects are available -->
-      <ng-template #noProjects>
-        <p class="text-center text-red-500">🚨 No projects found! Check the console or Firestore data.</p>
-      </ng-template>
     </div>
-  </section>
-  <div *ngFor="let project of projects">
-    <h3>{{ project.title }}</h3>
-    
+
+    <!-- Template for when no projects are available -->
+    <ng-template #noProjects>
+      <p class="text-center text-red-500">🚨 No projects found! Check the console or Firestore data.</p>
+    </ng-template>
+  </div>
+</section>

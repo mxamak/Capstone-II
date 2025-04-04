@@ -1,24 +1,13 @@
-<!-- how-it-works.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>How It Works</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>How It Works</h1>
-    </header>
-    <main>
-        <p>Discover how to participate or publish research in just a few simple steps.</p>
-        <ul>
-            <li>Step 1: Sign up or log in</li>
-            <li>Step 2: Browse or create research opportunities</li>
-            <li>Step 3: Connect with researchers or participants</li>
-            <li>Step 4: Contribute and collaborate!</li>
-        </ul>
-    </main>
-</body>
-</html>
+<div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold text-center text-blue-600 mb-8">How It Works</h1>
+  
+    <div *ngFor="let section of sections">
+      <h2 class="text-2xl font-semibold text-blue-500 mb-4">{{ section.title }}</h2>
+      
+      <div *ngFor="let item of section.content">
+        <h3 class="text-xl font-medium text-gray-800 mt-4">{{ item.header }}</h3>
+        <p class="text-gray-600 mt-2">{{ item.description }}</p>
+      </div>
+    </div>
+  </div>
+  

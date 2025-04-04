@@ -4,6 +4,10 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
 
+
+
+
+
 @Component({
   selector: 'app-registration',
   standalone: true,
@@ -26,6 +30,10 @@ export class RegistrationComponent {
       confirmPassword: ['', Validators.required],
       userType: ['participant', Validators.required] // Default to participant
     });
+  }
+
+  goToHowItWorks() {
+    this.router.navigate(['/how-it-works']);
   }
 
   registerUser() {

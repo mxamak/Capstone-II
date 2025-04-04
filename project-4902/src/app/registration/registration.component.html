@@ -6,6 +6,13 @@
       </h2>
     </div>
 
+    <div class="text-center mt-6">
+      <button
+      class="bg-blue-600 text-white font-bold py-2 px-4 rounded"
+      (click)="goToHowItWorks()">How It Works</button>
+    </div>
+
+
     <form [formGroup]="registrationForm" (ngSubmit)="registerUser()">
       <div class="space-y-6">
         <div>

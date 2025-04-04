@@ -57,4 +57,9 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
+
+  // Add a method to get the current user ID
+  getUserId(): string {
+    return localStorage.getItem('token') || '';
+  }
 }

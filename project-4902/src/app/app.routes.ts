@@ -14,6 +14,8 @@ import { NewsComponent } from './news/news.component';
 import { ViewProfileComponent } from './view-profile/view-profile.component';
 import { ViewOthersProfileComponent } from './view-others-profile/view-others-profile.component';
 import { YourProjectsComponent } from './your-projects/your-projects.component';
+import { ViewFeedbackComponent } from './view-feedback/view-feedback.component';
+import { FeedbackFormComponent } from './feedback-form/feedback-form.component';
 
 export const routes: Routes = [
   { path: '', title: 'Research Finder', component: HomeComponent },
@@ -28,6 +30,9 @@ export const routes: Routes = [
   { path: 'view-profile', component: ViewProfileComponent},
   { path: 'view-others-profile/:userId',  component: ViewOthersProfileComponent},
   { path: 'your-projects', component: YourProjectsComponent},
+  { path: 'feedback-form/:projectId', component: FeedbackFormComponent },
+  { path: 'view-feedback/:projectId', component: ViewFeedbackComponent },
+  { path: 'create-research/:id', component: ResearchCreationComponent },
 
   // 🔐 Protected Routes
   { path: 'research-creation', component: ResearchCreationComponent, canActivate: [AuthGuard] },

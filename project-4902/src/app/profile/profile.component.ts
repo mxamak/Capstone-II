@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, HostListener  } from '@angular/core';
 import { Auth } from '@angular/fire/auth'; // Firebase Auth service
 import { inject } from '@angular/core'; // For injecting the Auth service
 import { User } from 'firebase/auth'; // Firebase User type
@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
 
   private auth = inject(Auth); // Inject Firebase Auth service
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private elementRef: ElementRef) {}
 
   ngOnInit(): void {
     // Listen for auth state changes and set the user
@@ -30,6 +30,14 @@ export class ProfileComponent implements OnInit {
   // Toggle the dropdown menu visibility
   toggleDropdown() {
     this.dropdownVisible = !this.dropdownVisible;
+  }
+
+  // Close dropdown when clicking outside
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: Event) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.dropdownVisible = false;
+    }
   }
 
   // Get user initials from displayName or email

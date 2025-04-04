@@ -1,11 +1,29 @@
 <section class="text-gray-600 body-font">
   <div class="container px-5 py-10 mx-auto">
     <h1 class="text-3xl font-medium text-gray-900 mb-4 text-center">
-      Create or Edit a Research Project
+      Create a Research Project
     </h1>
 
-    <!-- Research Form -->
-    <form [formGroup]="researchForm" (ngSubmit)="onSubmit($event)" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <!-- Show loading until userType is known -->
+    <div *ngIf="userType === null" class="text-center text-gray-600 py-4">
+      Loading access...
+    </div>
+
+    <!-- Show access denied message if user is not a researcher -->
+    <div *ngIf="userType !== null && userType !== 'researcher'" 
+         class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6 mt-6 shadow-md mx-auto max-w-2xl">
+      <strong class="font-bold">Access Denied:</strong>
+      <span class="block sm:inline">
+        Only <span class="font-semibold">Researchers</span> can create research projects.
+      </span>
+      <p class="text-sm mt-1">
+        If you believe this is a mistake, please update your profile or contact support.
+      </p>
+    </div>
+
+    <!-- Show form only for researchers -->
+    <form *ngIf="userType === 'researcher'" [formGroup]="researchForm" (ngSubmit)="onSubmit($event)"
+      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       
       <!-- Research Title -->
       <div class="mb-4">
@@ -58,48 +76,5 @@
         </button>
       </div>
     </form>
-
-    <!-- Research Projects List -->
-    <h2 class="text-2xl font-medium text-gray-900 mb-4">Existing Research Projects</h2>
-    
-    <div *ngFor="let research of researchProjects$ | async" class="bg-white p-6 shadow-md rounded mb-6">
-      <h3 class="text-xl font-bold text-gray-900">{{ research.title }}</h3>
-      <p class="text-gray-700 mt-2"><strong>Description:</strong> {{ research.description }}</p>
-      <p class="text-gray-700 mt-1"><strong>Researchers:</strong> {{ research.researchers }}</p>
-      <p class="text-gray-700 mt-1"><strong>Target Audience:</strong> {{ research.targetAudience }}</p>
-      <p class="text-gray-700 mt-1">
-        <strong>Tool Link:</strong> 
-        <a [href]="research.toolLink" target="_blank" class="text-blue-600 hover:underline">{{ research.toolLink }}</a>
-      </p>
-
-      <!-- Participants -->
-      <div class="mt-4">
-        <h4 class="text-lg font-semibold">Participants:</h4>
-        <ul class="bg-gray-100 p-3 rounded">
-          <li *ngFor="let participant of research['participants']" class="flex justify-between items-center py-2 border-b">
-            <a [routerLink]="['/view-others-profile', participant.uid]" class="text-blue-500 hover:underline">
-              {{ participant.displayName || 'Unknown Participant' }}
-            </a>
-            <button (click)="removeParticipant(research.id, participant.uid)" 
-              class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
-              ❌
-            </button>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Buttons -->
-      <div class="flex mt-4 space-x-3">
-        <button (click)="editResearch(research)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded">
-          Edit
-        </button>
-        <button (click)="deleteResearch(research.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
-          Delete
-        </button>
-        <button (click)="addParticipantToProject(research.id)" class="bg-green-700 hover:bg-green-500 text-white font-bold py-1 px-3 rounded">
-          Join Project
-        </button>
-      </div>
-    </div>
   </div>
 </section>

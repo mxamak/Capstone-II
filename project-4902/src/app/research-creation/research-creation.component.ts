@@ -1,5 +1,3 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { Firestore, collection, addDoc, collectionData, doc, updateDoc, deleteDoc, serverTimestamp, arrayUnion, arrayRemove, getDoc } from '@angular/fire/firestore';
 import { Auth, User } from '@angular/fire/auth';
 import { Observable, from } from 'rxjs';
@@ -10,6 +8,10 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog.component';
 import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-research-creation',
@@ -18,11 +20,12 @@ import { RouterModule } from '@angular/router';
   templateUrl: './research-creation.component.html',
   styleUrls: ['./research-creation.component.css']
 })
-export class ResearchCreationComponent {
+export class ResearchCreationComponent implements OnInit {
   researchForm: FormGroup;
   researchProjects$: Observable<any[]>;
   selectedResearchId: string | null = null;
   currentUser: User | null = null;
+  userType: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -32,7 +35,7 @@ export class ResearchCreationComponent {
     private snackBar: MatSnackBar
   ) {
     this.researchForm = this.fb.group({
-      title: [''],
+      title: ['', Validators.required],
       description: [''],
       researchers: [''],
       targetAudience: [''],
@@ -47,16 +50,47 @@ export class ResearchCreationComponent {
         participants: Array.isArray(proj['participants']) ? proj['participants'] : []
       })))
     );
-    
-    
+  }
 
+  ngOnInit(): void {
     this.auth.onAuthStateChanged(user => {
       this.currentUser = user;
+      if (user) {
+        this.fetchUserType(user.uid);
+      }
     });
   }
 
+  async fetchUserType(userId: string): Promise<void> {
+    try {
+      const userDocRef = doc(this.firestore, 'users', userId);
+      const userDocSnap = await getDoc(userDocRef);
+  
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        console.log('Fetched user data:', userData);
+  
+        this.userType = (userData && userData['userType']) || 'participant';
+        console.log('User type set:', this.userType);
+      } else {
+        this.userType = 'participant';
+        console.log('User not found in firestore, defaulting to participant');
+      }
+    } catch (error) {
+      console.error('Error fetching user type:', error);
+      this.userType = 'participant';
+    }
+  }
+  
+  
+
   async onSubmit(event: Event) {
     event.preventDefault();
+
+    if (this.userType !== 'researcher') {
+      this.snackBar.open('❌ Only researchers can create research projects!', 'Close', { duration: 3000 });
+      return;
+    }
 
     if (this.researchForm.valid && this.currentUser) {
       const formData = { ...this.researchForm.value };
@@ -114,7 +148,7 @@ export class ResearchCreationComponent {
   
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  
+
   async deleteResearch(id: string) {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent);
   
@@ -130,6 +164,7 @@ export class ResearchCreationComponent {
       }
     });
   }
+
   async removeParticipant(projectId: string, participantUid: string) {
     const projectRef = doc(this.firestore, 'Create-Research', projectId);
 
@@ -147,5 +182,4 @@ export class ResearchCreationComponent {
       console.error('Error removing participant:', error);
     }
   }
-  
 }

@@ -19,7 +19,9 @@
 
       <!-- Show Logout if logged in -->
       <ng-container *ngIf="isLoggedIn">
-    
+        <a routerLink="/research-creation" routerLinkActive="active" class="mr-8 hover:text-white">Create Research Projects</a>
+        <a routerLink="/participants-research-details" routerLinkActive="active" class="mr-8 hover:text-white">Explore Research Projects</a>
+
         <!--  Profile-Icon  --> 
         <app-profile></app-profile> <!-- Embed ProfileComponent directly -->
         
