@@ -1,133 +1,67 @@
-<!-- <section class="text-gray-600 body-font">
-  <div class="container px-5 py-10 mx-auto">
-    <h1 class="text-3xl font-medium title-font text-gray-900 mb-4 text-center">
-      Create or Edit a Research Project
-    </h1>
-
-    <form [formGroup]="researchForm" (ngSubmit)="onSubmit($event)" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      
-       Research Title 
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">Research Title:</label>
-        <input formControlName="title" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
-          type="text" placeholder="Enter research title">
-      </div>
-
-       Research Description 
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
-        <textarea formControlName="description" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
-          placeholder="Enter research description"></textarea>
-      </div>
-
-       Researcher Names 
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">Researcher(s) Name(s):</label>
-        <input formControlName="researchers" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
-          type="text" placeholder="Enter researcher names (comma-separated)">
-      </div>
-
-       Target Audience 
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">Target Audience:</label>
-        <select formControlName="targetAudience" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
-          <option value="students">Students</option>
-          <option value="faculty">Faculty</option>
-          <option value="general-public">General Public</option>
-          <option value="professionals">Professionals</option>
-        </select>
-      </div>
-
-       Tool Link 
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">Tool Link:</label>
-        <input formControlName="toolLink" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
-          type="url" placeholder="Enter the link to the tool (e.g., https://example.com)">
-      </div>
-
-       Submit Button 
-      <button type="submit" class="bg-green-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        {{ selectedResearchId ? 'Update' : 'Submit' }}
-      </button>
-      
-       Cancel Edit Button 
-      <button type="button" *ngIf="selectedResearchId" (click)="selectedResearchId = null; researchForm.reset();"
-        class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded ml-2">
-        Cancel
-      </button>
-    </form>
-
-    <h2 class="text-2xl font-medium title-font text-gray-900 mb-4 text-center">Existing Research Projects</h2>
-
-    <div *ngFor="let research of researchProjects$ | async" class="bg-gray-100 p-4 rounded mb-4 shadow">
-      <h3 class="text-xl font-bold">{{ research.title }}</h3>
-      <p><strong>Description:</strong> {{ research.description }}</p>
-      <p><strong>Researchers:</strong> {{ research.researchers }}</p>
-      <p><strong>Target Audience:</strong> {{ research.targetAudience }}</p>
-      <p><strong>Tool Link:</strong> <a [href]="research.toolLink" target="_blank" class="text-blue-600 underline">{{ research.toolLink }}</a></p>
-
-      <button (click)="editResearch(research, $event)" class="bg-green-800 hover:bg-green-600 text-white font-bold py-1 px-3 rounded mr-2">
-        Edit
-      </button>
-      
-
-      <button (click)="deleteResearch(research.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
-        Delete
-      </button>
-    </div>
-  </div>
-</section>
--->
 <section class="text-gray-600 body-font">
   <div class="container px-5 py-10 mx-auto">
-    <h1 class="text-3xl font-medium title-font text-gray-900 mb-4 text-center">
-      Create or Edit a Research Project
+    <h1 class="text-3xl font-medium text-gray-900 mb-4 text-center">
+      Create a Research Project
     </h1>
 
-    <!-- Research Form -->
-    <form [formGroup]="researchForm" (ngSubmit)="onSubmit($event)" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <!-- Show loading until userType is known -->
+    <div *ngIf="userType === null" class="text-center text-gray-600 py-4">
+      Loading access...
+    </div>
+
+    <!-- Show access denied message if user is not a researcher -->
+    <div *ngIf="userType !== null && userType !== 'researcher'" 
+         class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6 mt-6 shadow-md mx-auto max-w-2xl">
+      <strong class="font-bold">Access Denied:</strong>
+      <span class="block sm:inline">
+        Only <span class="font-semibold">Researchers</span> can create research projects.
+      </span>
+      <p class="text-sm mt-1">
+        If you believe this is a mistake, please update your profile or contact support.
+      </p>
+    </div>
+
+    <!-- Show form only for researchers -->
+    <form *ngIf="userType === 'researcher'" [formGroup]="researchForm" (ngSubmit)="onSubmit($event)"
+      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       
       <!-- Research Title -->
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">Research Title:</label>
-        <input formControlName="title" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" type="text" placeholder="Enter research title">
+        <input formControlName="title" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" 
+          type="text" placeholder="Enter research title" required>
       </div>
 
       <!-- Description -->
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
-        <textarea formControlName="description" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" rows="3" placeholder="Enter research description"></textarea>
+        <textarea formControlName="description" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" 
+          rows="3" placeholder="Enter research description"></textarea>
       </div>
 
       <!-- Researchers -->
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">Researchers:</label>
-        <input formControlName="researchers" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" type="text" placeholder="Enter researcher names">
+        <input formControlName="researchers" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" 
+          type="text" placeholder="Enter researcher names">
       </div>
 
       <!-- Target Audience -->
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">Target Audience:</label>
-        <input formControlName="targetAudience" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" type="text" placeholder="Enter target audience">
+        <select formControlName="targetAudience" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+          <option value="students">Students</option>
+          <option value="faculty">Faculty</option>
+          <option value="general-public">Public</option>
+          <option value="professionals">Professionals</option>
+        </select>
       </div>
 
       <!-- Tool Link -->
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">Tool Link:</label>
-        <input formControlName="toolLink" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" type="url" placeholder="Enter tool link">
-      </div>
-
-      <!-- Participants List -->
-      <div *ngIf="researchForm.value.participants?.length > 0" class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">Active Participants:</label>
-        <ul class="bg-gray-100 p-4 rounded">
-          <li *ngFor="let participant of researchForm.value.participants" class="flex justify-between items-center py-2 border-b">
-            <span>{{ participant }}</span>
-            <button type="button" (click)="removeParticipant(participant)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
-              Remove
-            </button>
-          </li>
-        </ul>
+        <input formControlName="toolLink" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" 
+          type="url" placeholder="Enter tool link">
       </div>
 
       <!-- Submit and Cancel Buttons -->
@@ -142,35 +76,5 @@
         </button>
       </div>
     </form>
-
-    <!-- Research Projects List -->
-    <div class="mt-10">
-      <h2 class="text-2xl font-medium text-gray-900 mb-4">Existing Research Projects</h2>
-      <div *ngFor="let research of researchProjects$ | async" class="bg-white p-4 shadow-md rounded mb-4">
-        <h3 class="text-lg font-semibold">{{ research.title }}</h3>
-        <p class="text-gray-600">{{ research.description }}</p>
-        <p class="text-sm text-gray-500"><strong>Researchers:</strong> {{ research.researchers }}</p>
-        <p class="text-sm text-gray-500"><strong>Target Audience:</strong> {{ research.targetAudience }}</p>
-        <p class="text-sm text-gray-500"><strong>Tool Link:</strong> <a [href]="research.toolLink" target="_blank" class="text-blue-500 hover:underline">{{ research.toolLink }}</a></p>
-
-        <!-- Participants Display -->
-        <div *ngIf="research.participants?.length > 0">
-          <p class="text-sm text-gray-500 font-semibold">Participants:</p>
-          <ul class="text-sm text-gray-600 list-disc pl-5">
-            <li *ngFor="let participant of research.participants">{{ participant }}</li>
-          </ul>
-        </div>
-
-        <div class="flex mt-3">
-          <button (click)="editResearch(research, $event)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded mr-2">
-            Edit
-          </button>
-
-          <button (click)="deleteResearch(research.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 </section>

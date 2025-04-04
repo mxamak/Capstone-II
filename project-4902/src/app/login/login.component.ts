@@ -20,7 +20,7 @@ export class LoginComponent {
 
   loginUser() {
     this.authService.login(this.email, this.password).subscribe({
-      next: () => this.router.navigate(['/research-creation']), // Change this to your main page
+      next: () => this.router.navigate(['/']), // Change this to your home page
       error: (err) => this.errorMessage = 'Invalid email or password!'
     });
   }

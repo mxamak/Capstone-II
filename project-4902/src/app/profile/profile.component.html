@@ -1,0 +1,21 @@
+<div class="profile-container">
+  <!-- Profile Icon (Initials or Photo) -->
+  <div class="profile-icon" (click)="toggleDropdown()">
+    <ng-container *ngIf="user?.photoURL; else initials">
+      <img [src]="user?.photoURL" alt="Profile" class="profile-img"/>
+    </ng-container>
+    <ng-template #initials>
+      {{ getInitials(user?.displayName, user?.email) }}
+    </ng-template>
+  </div>
+
+  <!-- Dropdown Menu -->
+  <div *ngIf="dropdownVisible" class="dropdown-menu">
+    <ul>
+      <li><a routerLink="/view-profile">View Profile</a></li>
+      <li><a routerLink="/your-projects">Your Projects</a></li>
+      <li><a routerLink="/how-it-works">How It Works</a></li>
+      <li><a (click)="logout()">Logout</a></li> <!-- Logout option -->
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+.container {
+    max-width: 800px;
+    margin-top: 2rem; /* Adds some space from the top */
+    margin-bottom: 2rem; /* Adds space at the bottom */
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem; /* Space below the main title */
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem; /* Adds space before each section title */
+    margin-bottom: 1rem; /* Adds space below section title */
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+    margin-top: 1.5rem; /* Adds space before each subheading */
+    margin-bottom: 0.5rem; /* Adds space below each subheading */
+  }
+  
+  p {
+    font-size: 1rem;
+    line-height: 1.7; /* Increases line-height for better readability */
+    margin-bottom: 1rem; /* Adds space between paragraphs */
+  }
+  
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+  
+  .mt-2 {
+    margin-top: 0.5rem;
+  }
+  
+  .mt-4 {
+    margin-top: 1.5rem;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .text-blue-600 {
+    color: #3182ce;
+  }
+  
+  .text-blue-500 {
+    color: #4299e1;
+  }
+  
+  .text-gray-600 {
+    color: #718096;
+  }
+  
+  .text-gray-800 {
+    color: #2d3748;
+  }
+  
+  .font-semibold {
+    font-weight: 600;
+  }
+  
+  .font-medium {
+    font-weight: 500;
+  }
+  
+  .font-bold {
+    font-weight: 700;
+  }
+  
+  .p-4 {
+    padding: 1.5rem; /* Increased padding for more space inside the container */
+  }
+  
+  .mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
