@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
 
@@ -54,3 +57,4 @@ export class RegistrationComponent {
     });
   }
 }
+
