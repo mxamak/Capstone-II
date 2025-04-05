@@ -17,4 +17,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_RESEARCH_FINDER_33C2B }}
           channelId: live
           projectId: research-finder-33c2b
-          entryPoint: 'project-4902\firebase.json'
+          entryPoint: 'project-4902/firebase.json'
