@@ -11,29 +11,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      # Set up Node.js (if needed for your build process)
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Specify the Node version you need
+          node-version: '18'
 
-      # Install dependencies
       - name: Install dependencies
         run: npm install
+        working-directory: ./project-4902
 
-      # Firebase CLI Authentication with Token
-      - name: Authenticate with Firebase
+      - name: Build Angular app
+        run: npm run build
+        working-directory: ./project-4902
+
+      - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_RESEARCH_FINDER_33C2B }}
           channelId: live
           projectId: research-finder-33c2b
+          entryPoint: ./project-4902
 
-      # Deploy to Firebase Hosting
-      - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting --project research-finder-33c2b
 
 
 
