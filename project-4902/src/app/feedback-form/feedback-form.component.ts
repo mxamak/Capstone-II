@@ -2,7 +2,7 @@ import { Component, OnInit, inject, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Firestore, collection, addDoc, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { AuthService} from '../auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
