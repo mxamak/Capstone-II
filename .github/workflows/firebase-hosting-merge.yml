@@ -17,11 +17,19 @@ jobs:
         run: |
           curl -sL https://firebase.tools | bash
 
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_RESEARCH_FINDER_33C2B }}
-          channelId: live
-          projectId: research-finder-33c2b
-          entryPoint: 'project-4902'  
+      # Authenticate with Firebase
+      - name: Set up Firebase CLI
+        run: |
+          firebase login:ci --token ${{ secrets.FIREBASE_TOKEN }}
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          npm install
+
+      # Deploy to Firebase
+      - name: Deploy to Firebase Hosting
+        run: |
+          firebase deploy --only hosting --project research-finder-33c2b --token ${{ secrets.FIREBASE_TOKEN }}
+
 
