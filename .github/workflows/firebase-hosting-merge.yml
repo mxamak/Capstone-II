@@ -12,24 +12,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      # Install Firebase CLI manually
+      # Install Firebase CLI
       - name: Install Firebase CLI
         run: |
           curl -sL https://firebase.tools | bash
 
-      # Authenticate with Firebase
+      # Set up Firebase authentication using GitHub secrets
       - name: Set up Firebase CLI
-        run: |
-          firebase login:ci --token ${{ secrets.FIREBASE_TOKEN }}
+        uses: wzieba/Firebase-Action@v2
+        with:
+          firebaseToken: ${{ secrets.FIREBASE_TOKEN }}
 
       # Install dependencies
       - name: Install dependencies
         run: |
           npm install
 
-      # Deploy to Firebase
+      # Deploy to Firebase Hosting
       - name: Deploy to Firebase Hosting
         run: |
-          firebase deploy --only hosting --project research-finder-33c2b --token ${{ secrets.FIREBASE_TOKEN }}
+          firebase deploy --only hosting --project research-finder-33c2b
+
 
 
