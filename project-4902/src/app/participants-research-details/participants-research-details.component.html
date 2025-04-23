@@ -11,11 +11,15 @@
 
     <!-- Loop through research projects -->
     <div *ngFor="let project of researchProjects$ | async" class="bg-gray-100 p-4 rounded mb-4 shadow">
+      <div *ngIf="project.imageUrl" class="mb-2">
+        <img [src]="project.imageUrl" alt="Research Image" class="w-full max-h-60 object-cover rounded-md"/>
+      </div>
+     
       <h3 class="text-xl font-bold">{{ project.title }}</h3>
       <p><strong>Description:</strong> {{ project.description }}</p>
       <p><strong>Researchers:</strong> {{ project.researchers }}</p>
       <p><strong>Target Audience:</strong> {{ project.targetAudience }}</p>
-      <p><strong>Tool Link:</strong> 
+      <p><strong>Tool Link:</strong>
         <a [href]="project.toolLink" target="_blank" class="text-blue-600 underline">{{ project.toolLink }}</a>
       </p>
 
@@ -32,8 +36,8 @@
               <a [routerLink]="['/view-others-profile', participant.uid]" class="text-blue-600 hover:underline">
                 {{ participant.displayName }} ({{ participant.email }})
               </a>
-              <button *ngIf="participant.uid === auth.currentUser?.uid" 
-                      (click)="removeParticipant(project.id, participant.uid)" 
+              <button *ngIf="participant.uid === auth.currentUser?.uid"
+                      (click)="removeParticipant(project.id, participant.uid)"
                       class="bg-red-500 text-white py-1 px-2 rounded">
                 Remove
               </button>

@@ -10,7 +10,7 @@
     </div>
 
     <!-- Show access denied message if user is not a researcher -->
-    <div *ngIf="userType !== null && userType !== 'researcher'" 
+    <div *ngIf="userType !== null && userType !== 'researcher'"
          class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6 mt-6 shadow-md mx-auto max-w-2xl">
       <strong class="font-bold">Access Denied:</strong>
       <span class="block sm:inline">
@@ -24,25 +24,30 @@
     <!-- Show form only for researchers -->
     <form *ngIf="userType === 'researcher'" [formGroup]="researchForm" (ngSubmit)="onSubmit($event)"
       class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      
+     
+      <!--Image Upload-->
+      <label for="image" class="block font-medium text-gray-700">Project Image:</label>
+      <input type="file" (change)="onFileSelected($event)" class="mb-4"/>
+
+
       <!-- Research Title -->
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">Research Title:</label>
-        <input formControlName="title" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" 
+        <input formControlName="title" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
           type="text" placeholder="Enter research title" required>
       </div>
 
       <!-- Description -->
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
-        <textarea formControlName="description" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" 
+        <textarea formControlName="description" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
           rows="3" placeholder="Enter research description"></textarea>
       </div>
 
       <!-- Researchers -->
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">Researchers:</label>
-        <input formControlName="researchers" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" 
+        <input formControlName="researchers" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
           type="text" placeholder="Enter researcher names">
       </div>
 
@@ -60,7 +65,7 @@
       <!-- Tool Link -->
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">Tool Link:</label>
-        <input formControlName="toolLink" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none" 
+        <input formControlName="toolLink" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
           type="url" placeholder="Enter tool link">
       </div>
 

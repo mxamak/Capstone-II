@@ -12,6 +12,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+
 
 @Component({
   selector: 'app-research-creation',
@@ -60,16 +62,25 @@ export class ResearchCreationComponent implements OnInit {
       }
     });
   }
+  selectedImageFile: File | null = null;
+
+onFileSelected(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if (input.files?.length) {
+    this.selectedImageFile = input.files[0];
+  }
+}
+
 
   async fetchUserType(userId: string): Promise<void> {
     try {
       const userDocRef = doc(this.firestore, 'users', userId);
       const userDocSnap = await getDoc(userDocRef);
-  
+ 
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
         console.log('Fetched user data:', userData);
-  
+ 
         this.userType = (userData && userData['userType']) || 'participant';
         console.log('User type set:', this.userType);
       } else {
@@ -81,22 +92,30 @@ export class ResearchCreationComponent implements OnInit {
       this.userType = 'participant';
     }
   }
-  
-  
+ 
+ 
 
   async onSubmit(event: Event) {
     event.preventDefault();
-
+ 
     if (this.userType !== 'researcher') {
       this.snackBar.open('❌ Only researchers can create research projects!', 'Close', { duration: 3000 });
       return;
     }
-
+ 
     if (this.researchForm.valid && this.currentUser) {
       const formData = { ...this.researchForm.value };
       formData.participants = formData.participants || [];
-
+ 
       try {
+        if (this.selectedImageFile) {
+          const storage = getStorage();
+          const storageRef = ref(storage, `research-images/${Date.now()}_${this.selectedImageFile.name}`);
+          await uploadBytes(storageRef, this.selectedImageFile);
+          const downloadURL = await getDownloadURL(storageRef);
+          formData.imageUrl = downloadURL; // store image URL
+        }
+ 
         if (this.selectedResearchId) {
           const docRef = doc(this.firestore, 'Create-Research', this.selectedResearchId);
           await updateDoc(docRef, formData);
@@ -108,9 +127,10 @@ export class ResearchCreationComponent implements OnInit {
           await addDoc(collectionRef, formData);
           this.snackBar.open('✅ Research project added successfully!', 'Close', { duration: 3000 });
         }
-
+ 
         this.researchForm.reset();
         this.selectedResearchId = null;
+        this.selectedImageFile = null;
       } catch (error) {
         console.error('Error adding/updating document:', error);
       }
@@ -118,10 +138,11 @@ export class ResearchCreationComponent implements OnInit {
       this.snackBar.open('❌ You need to be logged in to create or update a research project!', 'Close', { duration: 3000 });
     }
   }
+ 
 
   async addParticipantToProject(projectId: string) {
     if (!this.currentUser) return;
-    
+   
     const projectRef = doc(this.firestore, 'Create-Research', projectId);
 
     try {
@@ -145,13 +166,13 @@ export class ResearchCreationComponent implements OnInit {
       toolLink: research.toolLink,
       participants: research['participants'] || []
     });
-  
+ 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   async deleteResearch(id: string) {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent);
-  
+ 
     dialogRef.afterClosed().subscribe(async (confirmed) => {
       if (confirmed) {
         try {

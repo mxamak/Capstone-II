@@ -1,36 +1,47 @@
-
-<div class="profile-container">
+<div class="profile-container max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md">
   <h1 class="text-3xl font-medium title-font text-gray-900 mb-4 text-center">
     Your Profile
   </h1>
-  
-    <!-- User Info -->
-    <div class="user-info">
-      <div class="profile-icon">
-        <ng-container *ngIf="user?.photoURL; else initials">
-          <img [src]="user?.photoURL" alt="Profile" class="profile-img"/>
-        </ng-container>
-        <ng-template #initials>
+
+  <!-- User Info -->
+  <div class="user-info flex flex-col items-center mb-6">
+    <!-- Circular Profile Icon -->
+    <div class="w-24 h-24 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center mb-4">
+      <ng-container *ngIf="user?.photoURL; else initials">
+        <img
+          [src]="user?.photoURL"
+          alt="Profile"
+          class="w-full h-full object-cover"
+        />
+      </ng-container>
+      <ng-template #initials>
+        <div class="bg-blue-500 text-white w-full h-full flex items-center justify-center text-xl font-bold">
           {{ getInitials(user?.displayName, user?.email) }}
-        </ng-template>
-      </div>
-  
-      <div class="user-details">
-        <p><strong>Email:</strong> {{ user?.email }}</p>
-        <p><strong>Username:</strong> {{ user?.displayName || 'No username set' }}</p>
-      </div>
+        </div>
+      </ng-template>
     </div>
-  
-    <!-- Description Editor -->
-    <div class="description-container">
-      <label for="description">Description:</label>
-      <textarea 
-        id="description" 
-        [(ngModel)]="description" 
-        rows="4" 
-        placeholder="Write something about yourself...">
-      </textarea>
-      <button (click)="saveDescription()" class="save-button">Save Description</button>
+
+    <!-- User Details -->
+    <div class="user-details text-center text-gray-700">
+      <p><strong>Email:</strong> {{ user?.email }}</p>
+      <p><strong>Username:</strong> {{ user?.displayName || 'No username set' }}</p>
     </div>
   </div>
-  
+
+  <!-- Description Editor -->
+  <div class="description-container">
+    <label for="description" class="block mb-2 font-medium text-gray-800">Description:</label>
+    <textarea
+      id="description"
+      [(ngModel)]="description"
+      rows="4"
+      class="w-full p-3 border border-gray-300 rounded resize-none mb-4"
+      placeholder="Write something about yourself...">
+    </textarea>
+    <button
+      (click)="saveDescription()"
+      class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full">
+      Save Description
+    </button>
+  </div>
+</div>
