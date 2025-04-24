@@ -25,9 +25,6 @@
     <form *ngIf="userType === 'researcher'" [formGroup]="researchForm" (ngSubmit)="onSubmit($event)"
       class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
      
-      <!--Image Upload-->
-      <label for="image" class="block font-medium text-gray-700">Project Image:</label>
-      <input type="file" (change)="onFileSelected($event)" class="mb-4"/>
 
 
       <!-- Research Title -->
